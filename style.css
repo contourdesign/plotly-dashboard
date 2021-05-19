@@ -1,9 +1,11 @@
 .light-motif {
     background-color: #fce1ff;
+    color: "#ffffff";
   }
 
 .panel-primary {
     background-color: #820091;
+    color: "#ffffff";
   }
 
 .dropshadowclass {
@@ -11,6 +13,7 @@
     -moz-box-shadow: 5px 5px 0px #999;
     -webkit-box-shadow: 5px 5px 0px #999;
     box-shadow: 5px 5px 0px #999;
+    color: "#ffffff";
     }
 
 

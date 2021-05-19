@@ -1,3 +1,11 @@
+.light-motif {
+    background-color: #fce1ff;
+  }
+
+.dark-motif {
+    background-color: #820091;
+  }
+
 .dropshadowclass {
     border: solid 1px #CCC;
     -moz-box-shadow: 5px 5px 0px #999;

@@ -10,7 +10,8 @@ function bargraph(id_input) {
       var otu_ids = data_id[0].otu_ids;
       var otu_labels = data_id[0].otu_labels;
       var otu_values = data_id[0].sample_values;
-      //format id to add OTU 
+      
+      // add OTU to the id 
       var yValues = otu_ids.slice(0, 10).map(x => "OTU" + x).reverse()
       
       //create traces and layout
@@ -92,6 +93,41 @@ function bargraph(id_input) {
 //       bargraph(data.names[0]);
 //     });
 //   };
+
+// Gauge chart for number of hand washes
+function gaugeChart(wfreq) {
+  var data = [
+    {
+      domain: { x: [0, 1], y: [0, 1] },
+      value: wfreq,
+      title: { text: "Weekly Washing Frequency" },
+      type: "indicator",
+      mode: "gauge+number",
+      gauge: {
+        axis: { range: [null, 9], tickwidth: 1, tickcolor: "#000000" },
+        steps: [
+          { range: [0, 1], color: "#fff4ed" },
+          { range: [1, 2], color: "#ffddc6" },
+          { range: [2, 3], color: "#ffc59f" },
+          { range: [3, 4], color: "#ffae78" },
+          { range: [4, 5], color: "#ff8650" },
+          { range: [5, 6], color: "#ff6e29" },
+          { range: [6, 7], color: "#ff4702" },
+          { range: [7, 8], color: "#ed2f00" },
+          { range: [8, 9], color: "#c61800" },
+        ],
+        threshold: {
+          line: { color: "orange", width: 4 },
+          thickness: 0.75,
+          value: 490,
+        },
+      },
+    },
+  ];
+
+  var layout = { width: 300, height: 225, margin: { t: 0, b: 0 } };
+  Plotly.newPlot("gauge", data, layout);
+}
   
   // change graphs based on input in dropdown
   function optionChanged(inp) {
@@ -103,7 +139,7 @@ function bargraph(id_input) {
     demoInfo(inp);
   };
 
-  //this is the default function one initialises that chooses a default option of the dropdown menu so graphs will always be shown
+  //this is the default function 
   defaultfunction();
   
   function demoInfo(id_inp) {  
@@ -111,7 +147,7 @@ function bargraph(id_input) {
     d3.json("samples.json").then((dj) => {    
     //get the data of ids, sample values hover text ->labels
         var metadata = dj.metadata;
-        // filter the data to only get the information associated with the input id
+        // filter the data via input id
         var dataId = metadata.filter(x => x.id == id_inp);
         var results = dataId[0];
         htmlEntry = d3.select("#sample-metadata");
@@ -129,6 +165,7 @@ function bargraph(id_input) {
         d3.select("#selDataset").append("option").text(name).property("value", name);    });
       //select one by default
       bargraph(data.names[0]);
+      gaugeChart(data.names[0]);
       demoInfo(data.names[0]);
       
     });

@@ -4,9 +4,9 @@ function bargraph(id_input) {
     d3.json("samples.json").then((data_json) => {
       //get the data of ids, sample values hover text ->labels
       var dataSamples = data_json.samples;
-      // filter the data to only get the information associated with the input id
+      // filter to get the information associated with the input id
       var data_id = dataSamples.filter(x => x.id == id_input);
-      //since it is an array get the first array of otu_ids
+      // get the first array of otu_ids
       var otu_ids = data_id[0].otu_ids;
       var otu_labels = data_id[0].otu_labels;
       var otu_values = data_id[0].sample_values;
@@ -14,10 +14,9 @@ function bargraph(id_input) {
       // add OTU to the id 
       var yValues = otu_ids.slice(0, 10).map(x => "OTU" + x).reverse()
       
-      //create traces and layout
+      //create traces and layout for top 10
       var trace1 = {
-        
-      // filter top 10 values to show in the plot
+
         x: otu_values.slice(0, 10).reverse(),     
         y: yValues,    
         text: otu_labels.slice(0, 10).reverse(),     
@@ -61,7 +60,7 @@ function bargraph(id_input) {
         }
       }
   
-      var bubbleLayout = {
+      var layout2 = {
         title: "Bacteria cultures",
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
@@ -76,7 +75,7 @@ function bargraph(id_input) {
           color: '#ffffff'
         }
       }
-      Plotly.newPlot("bubble", [bubbleData], bubbleLayout)
+      Plotly.newPlot("bubble", [bubbleData], layout2)
     });
   };
   
@@ -100,7 +99,7 @@ function gaugeChart(wfreq) {
     {
       domain: { x: [0, 1], y: [0, 1] },
       value: wfreq,
-      title: { text: "Weekly Washing Frequency" },
+      title: { text: "Weekly Washing Frequency (broken)" },
       type: "indicator",
       mode: "gauge+number",
       gauge: {
@@ -113,8 +112,8 @@ function gaugeChart(wfreq) {
           { range: [4, 5], color: "#ff8650" },
           { range: [5, 6], color: "#ff6e29" },
           { range: [6, 7], color: "#ff4702" },
-          { range: [7, 8], color: "#ed2f00" },
-          { range: [8, 9], color: "#c61800" },
+          { range: [7, 8], color: "#ed2fe0" },
+          { range: [8, 9], color: "#c61890" },
         ],
         threshold: {
           line: { color: "orange", width: 4 },
@@ -125,7 +124,8 @@ function gaugeChart(wfreq) {
     },
   ];
 
-  var layout = { width: 300, height: 225, margin: { t: 0, b: 0 } };
+  var layout = { width: 500, height: 275, paper_bgcolor: 'rgba(0,0,0,0)',
+  plot_bgcolor: 'rgba(0,0,0,0)', margin: { t: 20, b: 20 } };
   Plotly.newPlot("gauge", data, layout);
 }
   
@@ -143,16 +143,16 @@ function gaugeChart(wfreq) {
   defaultfunction();
   
   function demoInfo(id_inp) {  
-    //read the data  
+    // read the data  
     d3.json("samples.json").then((dj) => {    
-    //get the data of ids, sample values hover text ->labels
+    // get the data of ids, add hover labels
         var metadata = dj.metadata;
         // filter the data via input id
         var dataId = metadata.filter(x => x.id == id_inp);
         var results = dataId[0];
         htmlEntry = d3.select("#sample-metadata");
         Object.entries(results).forEach(([key, value]) => {
-          htmlEntry.append("p").text(`${key}:${value}`)    });
+          htmlEntry.append("p").text(`${key}: ${value}`)});
       });
     };
   
@@ -162,8 +162,8 @@ function gaugeChart(wfreq) {
     d3.json("samples.json").then((data) => {
       var names = data.names;
       names.forEach((name) => {
-        d3.select("#selDataset").append("option").text(name).property("value", name);    });
-      //select one by default
+      d3.select("#selDataset").append("option").text(name).property("value", name);    });
+      //select starting value for menu
       bargraph(data.names[0]);
       gaugeChart(data.names[0]);
       demoInfo(data.names[0]);

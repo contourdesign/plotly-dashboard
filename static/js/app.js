@@ -98,17 +98,17 @@ function gaugeChart(id_input) {
     console.log(id_input)
 
     var dataSamples = data_json.metadata;
-      // filter to get the information associated with the input id
-      var data_id = dataSamples.filter(x => x.id == id_input);
-      // get the first array of otu_ids
-      var wfreq = data_id[0].wfreq;
+    // filter to get the information associated with the input id
+    var data_id = dataSamples.filter(x => x.id == id_input);
+    // get wfreq data
+    var wfreq = data_id[0].wfreq;
     console.log(data_id)
     console.log(wfreq)
     var data = [
     {
       domain: { x: [0, 1], y: [0, 1] },
       value: wfreq,
-      title: { text: "Weekly Washing Frequency (broken)" },
+      title: { text: "Weekly Washing Frequency" },
       type: "indicator",
       mode: "gauge+number",
       gauge: {
@@ -135,7 +135,9 @@ function gaugeChart(id_input) {
   ];
 
   var layout = { width: 500, height: 275, paper_bgcolor: 'rgba(0,0,0,0)',
-  plot_bgcolor: 'rgba(0,0,0,0)', margin: { t: 20, b: 20 } };
+  plot_bgcolor: 'rgba(0,0,0,0)', margin: { t: 20, b: 20 }, font: {
+    color: '#ffffff'
+  }};
   Plotly.newPlot("gauge", data, layout);
 });
 }
@@ -170,11 +172,12 @@ function gaugeChart(id_input) {
   
   //drop down menu
   function defaultfunction() {
-    //this populates the dropdown for users to choose
+    // populates the dropdown
     d3.json("samples.json").then((data) => {
       var names = data.names;
       names.forEach((name) => {
-      d3.select("#selDataset").append("option").text(name).property("value", name);    });
+      d3.select("#selDataset").append("option").text(name).property("value", name);    
+    });
       //select starting value for menu
       bargraph(data.names[0]);
       gaugeChart(data.names[0]);

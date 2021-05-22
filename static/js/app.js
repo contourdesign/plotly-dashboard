@@ -1,4 +1,3 @@
-
 function bargraph(id_input) {
     //read the data
     d3.json("samples.json").then((data_json) => {
@@ -94,8 +93,18 @@ function bargraph(id_input) {
 //   };
 
 // Gauge chart for number of hand washes
-function gaugeChart(wfreq) {
-  var data = [
+function gaugeChart(id_input) {
+  d3.json("samples.json").then((data_json) => {
+    console.log(id_input)
+
+    var dataSamples = data_json.metadata;
+      // filter to get the information associated with the input id
+      var data_id = dataSamples.filter(x => x.id == id_input);
+      // get the first array of otu_ids
+      var wfreq = data_id[0].wfreq;
+    console.log(data_id)
+    console.log(wfreq)
+    var data = [
     {
       domain: { x: [0, 1], y: [0, 1] },
       value: wfreq,
@@ -119,7 +128,8 @@ function gaugeChart(wfreq) {
           line: { color: "orange", width: 4 },
           thickness: 0.75,
           value: 490,
-        },
+      },
+        
       },
     },
   ];
@@ -127,11 +137,13 @@ function gaugeChart(wfreq) {
   var layout = { width: 500, height: 275, paper_bgcolor: 'rgba(0,0,0,0)',
   plot_bgcolor: 'rgba(0,0,0,0)', margin: { t: 20, b: 20 } };
   Plotly.newPlot("gauge", data, layout);
+});
 }
   
   // change graphs based on input in dropdown
   function optionChanged(inp) {
     bargraph(inp);
+    gaugeChart(inp);
     // select class with panel-body
     var panel = d3.select(".panel-body");
     // empty contents on change
